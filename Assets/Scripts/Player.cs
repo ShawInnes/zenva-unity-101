@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI coinText;
 
+    private GameObject sword;
+
     private bool jump;
 
     private int coins;
@@ -21,6 +23,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sword = transform.GetChild(0).gameObject;
         playerBody = GetComponent<Rigidbody>();
         game = FindObjectOfType<Game>();
     }
@@ -34,6 +37,11 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
+        }
+
+        if (Input.GetButtonDown("Attack"))
+        {
+            PerformAttack();
         }
     }
 
@@ -53,6 +61,14 @@ public class Player : MonoBehaviour
         Ray ray = new Ray(transform.position, Vector3.down);
 
         return Physics.Raycast(ray, distance);
+    }
+
+    private void PerformAttack()
+    {
+        if (!sword.activeSelf)
+        {
+            sword.SetActive(true);
+        }
     }
 
     private void OnCollisionEnter(Collision other)
